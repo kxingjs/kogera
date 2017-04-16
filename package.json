@@ -1,0 +1,15 @@
+{
+  "name": "kogera-reader",
+  "version": "1.0.0",
+  "description": "qrcode reader with kxing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "kogera-reader"
+  },
+  "author": "Ttasuya Yamamoto",
+  "license": "MIT"
+}
