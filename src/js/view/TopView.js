@@ -30,23 +30,24 @@ const CAMERA_CAPTURE_INTERVAL = 1000;
 const APPBAR_HEIGHT = getMuiTheme().appBar.height;
 
 const APPBAR_TITLE = 'Kogera Reader';
+const Ids = {
+    tempClipboardCopyArea: 'tempClipboardCopyArea',
+    debugImage: 'debugImage'
+};
 
 export default class TopView extends React.Component {
-    state = INIT_STATE;
+    state = Object.assign({}, INIT_STATE);
 
     onTakeSnapshot = (imageData) => {
         IS_SHOWN_DEBUG_IMAGE && this.drawDebugImage(imageData);
-
         try {
             const resultText = DecodeService.decode(imageData);
-            const urls = detectUrls(resultText);
-
-            const resultDialogState = Object.assign(this.state.resultDialog, {
+            const dialogState = Object.assign({}, this.state.resultDialog, {
                 isOpen: true,
-                result: resultText,
-                urls: urls
+                text: resultText
             });
-            this.setState({resultDialog: resultDialogState});
+
+            this.setState({resultDialog: dialogState});
         } catch (ignore) {
         }
     };
@@ -61,7 +62,7 @@ export default class TopView extends React.Component {
     };
 
     drawDebugImage(imageData) {
-        const imageElement = document.getElementById("debugImage");
+        const imageElement = document.getElementById(Ids.debugImage);
         const canvas = document.createElement('canvas');
         canvas.width = imageData.width;
         canvas.height = imageData.height;
@@ -82,6 +83,14 @@ export default class TopView extends React.Component {
     handleCloseDialog = () => {
         this.setState({resultDialog: INIT_STATE.resultDialog});
     };
+
+    handleCopyToClipBoard(t) {
+        const inputElement = document.getElementById(Ids.tempClipboardCopyArea);
+        inputElement.focus();
+        inputElement.setSelectionRange(0, 9999);
+        document.execCommand('copy');
+        inputElement.blur();
+    }
 
     render() {
         const cameraWidth = this.state.window.width;
@@ -106,36 +115,34 @@ export default class TopView extends React.Component {
                     interval={CAMERA_CAPTURE_INTERVAL}
                     onDidSnapshot={this.onTakeSnapshot}/>
 
-                {IS_SHOWN_DEBUG_IMAGE && <img style={{marginTop: 650}} id="debugImage"/>}
+                {IS_SHOWN_DEBUG_IMAGE && <img style={{marginTop: 650}} id={Ids.debugImage}/>}
 
                 <Dialog
                     title="Result"
                     actions={[
-                        <FlatButton
-                            label="OK"
+                        <RaisedButton
+                            label='Copy to clipboard'
                             primary={true}
-                            keyboardFocused={true}
+                            onTouchTap={() => this.handleCopyToClipBoard(this.state.resultDialog.text)}
+                        />,
+                        <FlatButton
+                            label="Close"
+                            primary={true}
                             onTouchTap={this.handleCloseDialog}
                         />,
                     ]}
                     modal={false}
                     open={this.state.resultDialog.isOpen}
-                    onRequestClose={this.handleCloseDialog}
-                >
-                    {this.state.resultDialog.text}
-                    {this.state.resultDialog.urls.map((url) => {
-                        return (
-                            <RaisedButton
-                                key={url}
-                                label={url}
-                                onTouchTap={() => {
-                                    window.location.href = url;
-                                }}
-                            />
-                        )
-                    })}
+                    onRequestClose={this.handleCloseDialog}>
+
+                    <span>{this.state.resultDialog.text}</span>
                 </Dialog>
 
+                <input
+                    id={Ids.tempClipboardCopyArea}
+                    type="text"
+                    style={{display: 'none'}}
+                    value={this.state.resultDialog.text}/>
             </div>
         )
     }
