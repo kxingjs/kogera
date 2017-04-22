@@ -7,18 +7,22 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import DecodeService from '../service/DecodeService';
+import {detectUrls} from '../util/UrlDetector';
+
 
 import CameraRanderComponent from '../component/CameraRanderComponent';
 
 const INIT_STATE = {
     window: {
-        width: 0,
-        height: 0
+        width: window.innerWidth,
+        height: window.innerHeight
     },
     resultDialog: {
         isOpen: false,
-        text: ""
+        text: "",
+        urls: []
     }
 };
 const IS_SHOWN_DEBUG_IMAGE = false;
@@ -30,18 +34,19 @@ const APPBAR_TITLE = 'Kogera Reader';
 export default class TopView extends React.Component {
     state = INIT_STATE;
 
-    onDidSnapshot = (imageData) => {
-        if (IS_SHOWN_DEBUG_IMAGE) {
-            this.drawDebugImage(imageData);
-        }
+    onTakeSnapshot = (imageData) => {
+        IS_SHOWN_DEBUG_IMAGE && this.drawDebugImage(imageData);
+
         try {
             const resultText = DecodeService.decode(imageData);
-            this.setState({
-                resultDialog: {
-                    isOpen: true,
-                    result: resultText
-                }
+            const urls = detectUrls(resultText);
+
+            const resultDialogState = Object.assign(this.state.resultDialog, {
+                isOpen: true,
+                result: resultText,
+                urls: urls
             });
+            this.setState({resultDialog: resultDialogState});
         } catch (ignore) {
         }
     };
@@ -94,13 +99,12 @@ export default class TopView extends React.Component {
                         </IconMenu>
                     }
                 />
-                <div>
-                    <CameraRanderComponent
-                        width={cameraWidth}
-                        height={cameraHeight}
-                        interval={CAMERA_CAPTURE_INTERVAL}
-                        onDidSnapshot={this.onDidSnapshot}/>
-                </div>
+                
+                <CameraRanderComponent
+                    width={cameraWidth}
+                    height={cameraHeight}
+                    interval={CAMERA_CAPTURE_INTERVAL}
+                    onDidSnapshot={this.onTakeSnapshot}/>
 
                 {IS_SHOWN_DEBUG_IMAGE && <img style={{marginTop: 650}} id="debugImage"/>}
 
@@ -119,6 +123,16 @@ export default class TopView extends React.Component {
                     onRequestClose={this.handleCloseDialog}
                 >
                     {this.state.resultDialog.text}
+                    {this.state.resultDialog.urls.map((url) => {
+                        return (
+                            <RaisedButton
+                                label={url}
+                                onTouchTap={() => {
+                                    window.location.href = url;
+                                }}
+                            />
+                        )
+                    })}
                 </Dialog>
 
             </div>
