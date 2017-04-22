@@ -126,6 +126,7 @@ export default class TopView extends React.Component {
                     {this.state.resultDialog.urls.map((url) => {
                         return (
                             <RaisedButton
+                                key={url}
                                 label={url}
                                 onTouchTap={() => {
                                     window.location.href = url;
