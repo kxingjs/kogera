@@ -19,8 +19,8 @@ const INIT_STATE = {
         height: window.innerHeight
     },
     resultDialog: {
-        isOpen: false,
-        text: "",
+        isOpen: true,
+        text: "hoge",
         urls: []
     }
 };
@@ -84,8 +84,9 @@ export default class TopView extends React.Component {
         this.setState({resultDialog: INIT_STATE.resultDialog});
     };
 
-    handleCopyToClipBoard() {
+    handleCopyToClipBoard(text) {
         const inputElement = document.getElementById(Ids.tempClipboardCopyArea);
+        inputElement.value = text;
         inputElement.focus();
         inputElement.setSelectionRange(0, 9999);
         document.execCommand('copy');
@@ -149,8 +150,8 @@ export default class TopView extends React.Component {
 
                 <input
                     id={Ids.tempClipboardCopyArea}
-                    type="hidden"
-                    value={this.state.resultDialog.text}/>
+                    type="text"
+                    style={{border: 'hidden', color: 'white'}}/>
             </div>
         )
     }
