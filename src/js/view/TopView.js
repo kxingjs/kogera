@@ -4,12 +4,16 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import SettingIcon from 'material-ui/svg-icons/action/settings';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import * as Colors from 'material-ui/styles/colors';
+
 import DecodeService from '../service/DecodeService';
 import {detectUrls} from '../util/UrlDetector';
+
 
 import CameraRanderComponent from '../component/CameraRanderComponent';
 
@@ -19,8 +23,8 @@ const INIT_STATE = {
         height: window.innerHeight
     },
     resultDialog: {
-        isOpen: true,
-        text: "hoge",
+        isOpen: false,
+        text: "",
         urls: []
     }
 };
@@ -93,9 +97,18 @@ export default class TopView extends React.Component {
         inputElement.blur();
     }
 
+    getStyles() {
+        return {
+            button: {
+                margin: 1
+            }
+        };
+    }
+
     render() {
         const cameraWidth = this.state.window.width;
         const cameraHeight = this.state.window.height - APPBAR_HEIGHT;
+        const {button} = this.getStyles();
 
         return (
             <div>
@@ -105,7 +118,9 @@ export default class TopView extends React.Component {
                     iconElementRight={
                         <IconMenu
                             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}>
-                            <MenuItem primaryText="Config"/>
+                            <MenuItem
+                                primaryText="Config"
+                                leftIcon={<SettingIcon color={Colors.darkBlack}/>}/>
                         </IconMenu>
                     }
                 />
@@ -123,20 +138,20 @@ export default class TopView extends React.Component {
                     actions={[
                         this.state.resultDialog.urls.map((url) => {
                             return (
-                                <FlatButton
+                                <RaisedButton
                                     label='Open'
-                                    primary={true}
+                                    style={button}
                                     onTouchTap={() => location.href = url}
                                 />)
                         }),
-                        <FlatButton
+                        <RaisedButton
                             label='Copy'
-                            primary={true}
+                            style={button}
                             onTouchTap={() => this.handleCopyToClipBoard(this.state.resultDialog.text)}
                         />,
-                        <FlatButton
+                        <RaisedButton
                             label="Close"
-                            primary={true}
+                            style={button}
                             onTouchTap={this.handleCloseDialog}
                         />
                     ]}
