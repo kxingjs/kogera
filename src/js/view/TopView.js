@@ -11,7 +11,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DecodeService from '../service/DecodeService';
 import {detectUrls} from '../util/UrlDetector';
 
-
 import CameraRanderComponent from '../component/CameraRanderComponent';
 
 const INIT_STATE = {
@@ -28,7 +27,7 @@ const INIT_STATE = {
 const IS_SHOWN_DEBUG_IMAGE = false;
 const CAMERA_CAPTURE_INTERVAL = 1000;
 const APPBAR_HEIGHT = getMuiTheme().appBar.height;
-
+const URL_PATTERN = /(https?:\/\/[\x21-\x7e]+)/g;
 const APPBAR_TITLE = 'Kogera Reader';
 const Ids = {
     tempClipboardCopyArea: 'tempClipboardCopyArea',
@@ -44,7 +43,8 @@ export default class TopView extends React.Component {
             const resultText = DecodeService.decode(imageData);
             const dialogState = Object.assign({}, this.state.resultDialog, {
                 isOpen: true,
-                text: resultText
+                text: resultText,
+                urls: detectUrls(resultText)
             });
 
             this.setState({resultDialog: dialogState});
@@ -84,7 +84,7 @@ export default class TopView extends React.Component {
         this.setState({resultDialog: INIT_STATE.resultDialog});
     };
 
-    handleCopyToClipBoard(t) {
+    handleCopyToClipBoard() {
         const inputElement = document.getElementById(Ids.tempClipboardCopyArea);
         inputElement.focus();
         inputElement.setSelectionRange(0, 9999);
@@ -120,8 +120,16 @@ export default class TopView extends React.Component {
                 <Dialog
                     title="Result"
                     actions={[
-                        <RaisedButton
-                            label='Copy to clipboard'
+                        this.state.resultDialog.urls.map((url) => {
+                            return (
+                                <FlatButton
+                                    label='Open'
+                                    primary={true}
+                                    onTouchTap={() => location.href = url}
+                                />)
+                        }),
+                        <FlatButton
+                            label='Copy'
                             primary={true}
                             onTouchTap={() => this.handleCopyToClipBoard(this.state.resultDialog.text)}
                         />,
@@ -129,19 +137,19 @@ export default class TopView extends React.Component {
                             label="Close"
                             primary={true}
                             onTouchTap={this.handleCloseDialog}
-                        />,
+                        />
                     ]}
                     modal={false}
                     open={this.state.resultDialog.isOpen}
                     onRequestClose={this.handleCloseDialog}>
 
                     <span>{this.state.resultDialog.text}</span>
+
                 </Dialog>
 
                 <input
                     id={Ids.tempClipboardCopyArea}
-                    type="text"
-                    style={{display: 'none'}}
+                    type="hidden"
                     value={this.state.resultDialog.text}/>
             </div>
         )
