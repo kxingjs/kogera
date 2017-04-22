@@ -11,7 +11,7 @@ import TopView from './view/TopView'
 window.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
         <BaseView>
-            <BrowserRouter>
+            <BrowserRouter basename={location.pathname}>
                 <Switch>
                     <Route exact path="/" component={TopView}/>
                     <Redirect from="*" to="/"/>
