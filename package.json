@@ -4,9 +4,11 @@
   "description": "qrcode reader with kxing",
   "main": "index.js",
   "scripts": {
+    "clean": "rimraf es dist",
     "start": "webpack-dev-server",
     "build": "webpack",
-    "build:min": "webpack --optimize-minimize --output-filename bundle.min.js"
+    "build:min": "webpack --optimize-minimize --output-filename bundle.min.js",
+    "update:pages": "npm run clean && npm run build:min && cp dist/* docs && git add docs && git commit -m \"update pages\" && git push origin master "
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.0",
     "html-webpack-plugin": "^2.28.0",
+    "rimraf": "^2.6.1",
     "style-loader": "^0.16.1",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2"
