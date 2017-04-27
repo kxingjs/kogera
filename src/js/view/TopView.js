@@ -7,7 +7,6 @@ import MenuItem from 'material-ui/MenuItem';
 import SettingIcon from 'material-ui/svg-icons/action/settings';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as Colors from 'material-ui/styles/colors';
 
@@ -31,7 +30,6 @@ const INIT_STATE = {
 const IS_SHOWN_DEBUG_IMAGE = false;
 const CAMERA_CAPTURE_INTERVAL = 1000;
 const APPBAR_HEIGHT = getMuiTheme().appBar.height;
-const URL_PATTERN = /(https?:\/\/[\x21-\x7e]+)/g;
 const APPBAR_TITLE = 'Kogera Reader';
 const Ids = {
     tempClipboardCopyArea: 'tempClipboardCopyArea',
@@ -50,7 +48,6 @@ export default class TopView extends React.Component {
                 text: resultText,
                 urls: detectUrls(resultText)
             });
-
             this.setState({resultDialog: dialogState});
         } catch (ignore) {
         }
