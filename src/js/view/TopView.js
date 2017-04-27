@@ -85,6 +85,11 @@ export default class TopView extends React.Component {
         this.setState({resultDialog: INIT_STATE.resultDialog});
     };
 
+    onClickSettingsButton = () => {
+        console.info(this);
+        this.props.history.push('/settings');
+    };
+
     handleCopyToClipBoard(text) {
         const inputElement = document.getElementById(Ids.tempClipboardCopyArea);
         inputElement.value = text;
@@ -112,14 +117,8 @@ export default class TopView extends React.Component {
                 <AppBar
                     title={APPBAR_TITLE}
                     showMenuIconButton={false}
-                    iconElementRight={
-                        <IconMenu
-                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}>
-                            <MenuItem
-                                primaryText="Config"
-                                leftIcon={<SettingIcon color={Colors.darkBlack}/>}/>
-                        </IconMenu>
-                    }
+                    iconElementRight={<IconButton><SettingIcon/></IconButton>}
+                    onRightIconButtonTouchTap={this.onClickSettingsButton}
                 />
                 
                 <CameraRanderComponent
