@@ -48,7 +48,6 @@ export default class CameraRanderComponent extends React.Component {
             videoStreamLoader: new VideoStreamLoader()
         };
         this._timeoutId = null;
-        this._videoStreamInUse = null;
         this._elements = {
             video: null,
             overlayCanvas: null
@@ -59,20 +58,9 @@ export default class CameraRanderComponent extends React.Component {
         // setup and start capture.
         const videoElement = document.querySelector('video');
 
-
         Promise.resolve()
             .then(() => {
-                return this._dependencies.videoStreamLoader.load()
-            })
-            .then((mediaStream) => {
-                this._videoStreamInUse = mediaStream;
-                videoElement.srcObject = mediaStream;
-
-                return new Promise((fulfilled, rejected) => {
-                    videoElement.addEventListener('loadedmetadata', () => {
-                        fulfilled();
-                    });
-                })
+                return this._dependencies.videoStreamLoader.load(videoElement);
             })
             .then(() => {
 
@@ -118,10 +106,7 @@ export default class CameraRanderComponent extends React.Component {
     };
 
     stopCapture = () => {
-        this._videoStreamInUse && this._videoStreamInUse.getVideoTracks()[0].stop();
-
-        console.log("getVideoTracks", this._videoStreamInUse.getVideoTracks()[0]);
-
+        this._dependencies.videoStreamLoader.stop();
         clearTimeout(this._timeoutId);
         this._timeoutId = null;
     };
@@ -142,20 +127,10 @@ export default class CameraRanderComponent extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('focus', () => {
-            console.log("on focus!");
-            this.startCapture();
-        });
-        window.addEventListener('blur', () => {
-            console.log("on blur!");
-            this.stopCapture();
-        });
+        window.addEventListener('focus', this.startCapture);
+        window.addEventListener('blur', this.stopCapture);
 
         this.startCapture();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
     }
 
     componentWillUnmount() {
