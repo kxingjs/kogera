@@ -1,19 +1,17 @@
 import React from 'react'
 import AppBar from 'material-ui/AppBar';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
+import Themes, {loadTheme} from '../Themes'
+import LocalStorageManager from '../service/LocalStorageManager'
 import PackageJson from '../../../package.json';
 
-const APPBAR_HEIGHT = getMuiTheme().appBar.height;
 const APPBAR_TITLE = 'Settings';
 
 export default class SettingsView extends React.Component {
@@ -27,11 +25,36 @@ export default class SettingsView extends React.Component {
         settings: {}
     };
 
+    constructor(props) {
+        super(props);
+
+        this._dependencies = {
+            localStorageManager: new LocalStorageManager()
+        }
+    }
+
     handleCloseView = () => {
-        this.props.history.replace('/');
+        this.props.history.push('/');
     };
 
-    handleOpenSelectTheme = () => {
+    handleSelectTheme = (selectedThemeKey) => {
+        const newSettings = Object.assign({}, this.state.settings, {
+            themeKey: selectedThemeKey
+        });
+
+        this.setState({
+            settings: newSettings,
+            selectThemeDialog: {
+                isOpen: false
+            }
+        });
+        this._dependencies.localStorageManager.saveValue('theme', selectedThemeKey);
+
+        // refresh
+        window.location.reload();
+    };
+
+    handleOpenSelectThemeDialog = () => {
         this.setState({
             selectThemeDialog: {
                 isOpen: true
@@ -66,7 +89,7 @@ export default class SettingsView extends React.Component {
     componentWillMount() {
         this.setState({
             settings: {
-                theme: ''
+                themeKey: this._dependencies.localStorageManager.getValue('theme')
             }
         })
     }
@@ -84,8 +107,8 @@ export default class SettingsView extends React.Component {
                     <Subheader>General</Subheader>
                     <ListItem
                         primaryText="Theme"
-                        secondaryText={this.state.settings.theme}
-                        onTouchTap={this.handleOpenSelectTheme}
+                        secondaryText={loadTheme(this.state.settings.themeKey).displayName}
+                        onTouchTap={this.handleOpenSelectThemeDialog}
                     />
                 </List>
                 <Divider/>
@@ -110,21 +133,14 @@ export default class SettingsView extends React.Component {
                     autoScrollBodyContent={true}
                 >
                     <List>
-                        {[
-                            'Fight Orrange',
-                            'Bird Grey',
-                            'Smart Cute Blue',
-                            'Arrow Blue',
-                            'Nyamazing Yellow',
-                            'Okome Green',
-                            'Spiritual Violet',
-                            'Smile Pink'
-                        ].map((theme) => {
+                        {Themes.map((theme) => {
                             return (
                                 <ListItem
-                                    key={theme}
-                                    primaryText={theme}
-                                    onTouchTap={this.handleCloseOpenSourcesDialog}
+                                    key={theme.key}
+                                    primaryText={theme.displayName}
+                                    onTouchTap={() => {
+                                        this.handleSelectTheme(theme.key)
+                                    }}
                                 />
                             )
                         })}
