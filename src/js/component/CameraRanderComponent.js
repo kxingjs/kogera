@@ -136,6 +136,8 @@ export default class CameraRanderComponent extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('focus', this.startCapture);
         window.removeEventListener('blur', this.stopCapture);
+
+        this.stopCapture();
     }
 
     render() {

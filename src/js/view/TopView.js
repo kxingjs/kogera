@@ -86,7 +86,6 @@ export default class TopView extends React.Component {
     };
 
     onClickSettingsButton = () => {
-        console.info(this);
         this.props.history.push('/settings');
     };
 
