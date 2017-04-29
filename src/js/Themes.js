@@ -15,17 +15,10 @@ export const FightOrange = Object.assign({}, BaseTheme, {
     key: 'fight_orange',
     displayName: 'Fight Orange',
     palette: {
-        primary1Color: Colors.amber400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: '#f8b500',
+        textColor: Colors.blueGrey900,
         alternateTextColor: Colors.white,
-        canvasColor: Colors.yellow50,
-        borderColor: Colors.yellow300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        canvasColor: Colors.yellowA100,
     }
 });
 
@@ -33,17 +26,9 @@ export const SmartCuteBlue = Object.assign({}, BaseTheme, {
     key: 'smart_blue',
     displayName: 'Smart Cute Blue',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
+        primary1Color: Colors.lightBlue200,
         accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
-        alternateTextColor: Colors.white,
-        canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        canvasColor: Colors.lightBlue200,
     }
 });
 
@@ -52,17 +37,10 @@ export const BirdGrey = Object.assign({}, BaseTheme, {
     key: 'bird_grey',
     displayName: 'Bird Grey',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: Colors.grey400,
+        textColor: Colors.blueGrey500,
         alternateTextColor: Colors.white,
-        canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        canvasColor: Colors.tealA100,
     }
 });
 
@@ -70,17 +48,10 @@ export const ArrowBlue = Object.assign({}, BaseTheme, {
     key: 'arrow_blue',
     displayName: 'Arrow Blue',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: '#4B64A1',
+        textColor: Colors.blueGrey800,
         alternateTextColor: Colors.white,
-        canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        canvasColor: Colors.lightBlue50,
     }
 });
 
@@ -88,17 +59,10 @@ export const NyamazingYellow = Object.assign({}, BaseTheme, {
     key: 'nyamazing_yellow',
     displayName: 'Nyamazing Yellow',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: Colors.yellowA400,
+        textColor: Colors.teal900,
         alternateTextColor: Colors.white,
-        canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        canvasColor: Colors.yellowA100,
     }
 });
 
@@ -106,17 +70,10 @@ export const SunshineRed = Object.assign({}, BaseTheme, {
     key: 'sunshine_red',
     displayName: 'Sunshine Red',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: Colors.red600,
+        textColor: Colors.deepOrange900,
         alternateTextColor: Colors.white,
-        canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        canvasColor: Colors.white,
     }
 });
 
@@ -124,17 +81,10 @@ export const SpiritualViolet = Object.assign({}, BaseTheme, {
     key: 'spiritual_violet',
     displayName: 'Spiritual Violet',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: Colors.deepPurple400,
+        textColor: Colors.blueGrey800,
         alternateTextColor: Colors.white,
         canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
     }
 });
 
@@ -142,17 +92,10 @@ export const OkomeGreen = Object.assign({}, BaseTheme, {
     key: 'okome_green',
     displayName: 'Okome Green',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: Colors.greenA400,
+        textColor: Colors.cyan900,
         alternateTextColor: Colors.white,
         canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
     }
 });
 
@@ -160,17 +103,10 @@ export const SmilePink = Object.assign({}, BaseTheme, {
     key: 'smile_pink',
     displayName: 'Smile Pink',
     palette: {
-        primary1Color: Colors.tealA400,
-        primary2Color: Colors.tealA700,
-        primary3Color: Colors.lightBlack,
-        accent1Color: Colors.orange400,
-        accent2Color: Colors.orange700,
-        accent3Color: Colors.grey500,
-        textColor: Colors.darkBlack,
+        primary1Color: Colors.pinkA200,
+        textColor: Colors.pinkA700,
         alternateTextColor: Colors.white,
-        canvasColor: Colors.grey100,
-        borderColor: Colors.grey300,
-        disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3)
+        // canvasColor: '#fce4ec'
     }
 });
 

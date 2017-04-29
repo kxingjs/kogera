@@ -1,8 +1,8 @@
-import {FightOrange} from '../Themes';
+import {FightOrange as DefaultTheme} from '../Themes';
 
 const SETTING_STORE_KEY = "kogera-reader-storage";
 const initStore = {
-    theme: FightOrange.key
+    theme: DefaultTheme.key
 };
 
 export default class LocalStorageManager {
