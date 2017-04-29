@@ -2,8 +2,8 @@ import React from 'react'
 import {PropTypes} from 'prop-types'
 import {KXing} from 'kxing';
 import VideoStreamLoader from '../service/VideoStreamLoader';
-
-const CAMERA_FRAME_STYLE = 'rgba(50, 50, 50, 0.5)';
+import {loadTheme} from '../Themes';
+import LocalStorageManager from '../service/LocalStorageManager';
 
 export default class CameraRanderComponent extends React.Component {
     static propTypes = {
@@ -52,6 +52,7 @@ export default class CameraRanderComponent extends React.Component {
             video: null,
             overlayCanvas: null
         };
+        this._overlayFillStyle = loadTheme(new LocalStorageManager().getValue('theme')).palette.primary1Color;
     }
 
     startCapture = () => {
@@ -79,7 +80,8 @@ export default class CameraRanderComponent extends React.Component {
                 canvasElement.width = videoWidth;
                 canvasElement.height = videoHeight;
                 const context = canvasElement.getContext('2d');
-                context.fillStyle = CAMERA_FRAME_STYLE;
+                context.globalAlpha = 0.2;
+                context.fillStyle = this._overlayFillStyle;
                 context.fillRect(0, 0, videoWidth, videoHeight);
                 context.clearRect(...clipProps);
 
