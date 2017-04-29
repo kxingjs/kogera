@@ -7,7 +7,7 @@
     "clean": "rimraf es dist",
     "start": "webpack-dev-server",
     "build": "webpack",
-    "build:min": "webpack --optimize-minimize --output-filename bundle.min.js",
+    "build:min": "webpack --optimize-minimize --define process.env.NODE_ENV=\"'production'\" --output-filename bundle.min.js",
     "update:pages": "npm run clean && npm run build:min && cp dist/* docs && git add docs && git commit -m \"update pages\" && git push origin master "
   },
   "repository": {
