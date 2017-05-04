@@ -59,39 +59,36 @@ export default class CameraRanderComponent extends React.Component {
 
     startCapture = () => {
         // setup and start capture.
-        const videoElement = document.querySelector('video');
+        const videoElement = this.videoElement;
+        const overlayElement = this.canvasElement;
 
         Promise.resolve()
             .then(() => {
                 return this._dependencies.videoStreamLoader.load(videoElement);
             })
             .then(() => {
-
-                const deviceWidth = videoElement.videoWidth;
-                const deviceHeight = videoElement.videoHeight;
+                // get video element size.
+                const videoDeviceRasio = videoElement.videoHeight / videoElement.videoWidth;
                 const videoWidth = videoElement.width;
-                const videoHeight = videoWidth * deviceHeight / deviceWidth;
+                const videoHeight = videoWidth * videoDeviceRasio;
 
-                const captureDimension = videoWidth < videoHeight ? videoWidth / 1.5 : videoHeight / 1.5;
-                const captureX = videoWidth * 0.5 - captureDimension * 0.5;
-                const captureY = videoHeight * 0.5 - captureDimension * 0.5;
+                // get clip size props.
+                const clipProps = this.getClipProps(videoWidth, videoHeight);
 
-                const clipProps = [captureX, captureY, captureDimension, captureDimension];
-
-                const canvasElement = document.getElementById('cameraFrame');
-                canvasElement.width = videoWidth;
-                canvasElement.height = videoHeight;
-                const context = canvasElement.getContext('2d');
-                context.globalAlpha = 0.2;
-                context.fillStyle = this._overlayFillStyle;
+                // draw overlay
+                overlayElement.width = videoWidth;
+                overlayElement.height = videoHeight;
+                const context = overlayElement.getContext('2d');
+                context.globalAlpha = OVERLAY_ALPHA;
+                context.fillStyle = OVERLAY_FILL_STYLE;
                 context.fillRect(0, 0, videoWidth, videoHeight);
                 context.clearRect(...clipProps);
 
+                // setup canvas element for capture
                 const captureCanvasElement = document.createElement('canvas');
                 captureCanvasElement.width = videoWidth;
                 captureCanvasElement.height = videoHeight;
                 const captureContext = captureCanvasElement.getContext('2d');
-
 
                 const capture = () => {
                     this._timeoutId = setTimeout(capture, this.props.interval);
@@ -104,7 +101,6 @@ export default class CameraRanderComponent extends React.Component {
                 };
                 capture();
 
-
             })
             .catch(this.props.onErrorCapture);
     };
@@ -114,6 +110,14 @@ export default class CameraRanderComponent extends React.Component {
         clearTimeout(this._timeoutId);
         this._timeoutId = null;
     };
+
+    getClipProps(videoWidth, videoHeight) {
+        const captureDimension = videoWidth < videoHeight ? videoWidth / 1.5 : videoHeight / 1.5;
+        const captureX = videoWidth * 0.5 - captureDimension * 0.5;
+        const captureY = videoHeight * 0.5 - captureDimension * 0.5;
+
+        return [captureX, captureY, captureDimension, captureDimension];
+    }
 
     getStyles() {
         return {
@@ -144,6 +148,13 @@ export default class CameraRanderComponent extends React.Component {
         this.stopCapture();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.width != nextProps.width) {
+            this.stopCapture();
+            this.startCapture();
+        }
+    }
+
     render() {
         const {cameraWindow, video, frame} = this.getStyles();
 
@@ -152,8 +163,19 @@ export default class CameraRanderComponent extends React.Component {
                 <video
                     autoPlay
                     style={video}
-                    width={this.props.width}/>
-                <canvas id="cameraFrame" style={frame}/>
+                    width={this.props.width}
+                    ref={(video) => {
+                        if (video != null) {
+                            this.videoElement = video;
+                        }
+                    }}/>
+                <canvas
+                    style={frame}
+                    ref={(canvas) => {
+                        if (canvas != null) {
+                            this.canvasElement = canvas;
+                        }
+                    }}/>
             </div>
         )
     }
