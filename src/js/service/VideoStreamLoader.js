@@ -77,8 +77,10 @@ export default class VideoStreamLoader {
      * stop video in use.
      */
     stop() {
-        this._currentStream.getVideoTracks()[0].stop();
-        this._currentStream = null;
+        if(this._currentStream){
+            this._currentStream.getVideoTracks()[0].stop();
+            this._currentStream = null;
+        }
     }
     
     _getVideoStreamPromise() {
