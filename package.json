@@ -1,6 +1,6 @@
 {
   "name": "kogera-reader",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "qrcode reader with kxing",
   "main": "index.js",
   "scripts": {
