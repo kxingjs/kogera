@@ -56,8 +56,8 @@ export default class TopView extends React.Component {
     handleResize = (e) => {
         this.setState({
             window: {
-                width: window.innerWidth,
-                height: window.innerHeight
+                width: document.body.clientWidth,
+                height: document.body.clientHeight
             }
         });
     };
