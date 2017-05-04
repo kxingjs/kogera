@@ -5,6 +5,9 @@ import VideoStreamLoader from '../service/VideoStreamLoader';
 import {loadTheme} from '../Themes';
 import LocalStorageManager from '../service/LocalStorageManager';
 
+const OVERLAY_FILL_STYLE = loadTheme(new LocalStorageManager().getValue('theme')).palette.primary1Color;
+const OVERLAY_ALPHA = 0.2;
+
 export default class CameraRanderComponent extends React.Component {
     static propTypes = {
         /**
@@ -52,7 +55,6 @@ export default class CameraRanderComponent extends React.Component {
             video: null,
             overlayCanvas: null
         };
-        this._overlayFillStyle = loadTheme(new LocalStorageManager().getValue('theme')).palette.primary1Color;
     }
 
     startCapture = () => {
