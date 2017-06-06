@@ -1,15 +1,14 @@
 import React from 'react'
 import AppBar from 'material-ui/AppBar';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 
-import Themes, {loadTheme} from '../Themes'
+import {loadTheme} from '../Themes'
 import OpenSourceListDialog from '../component/OpenSourceListDialog';
+import ThemeSelectDialog from '../component/ThemeSelectDialog';
 import LocalStorageManager from '../service/LocalStorageManager'
 import PackageJson from '../../../package.json';
 
@@ -126,27 +125,10 @@ export default class SettingsView extends React.Component {
                     />
                 </List>
 
-                <Dialog
-                    title="Theme"
-                    modal={false}
+                <ThemeSelectDialog
                     open={this.state.selectThemeDialog.isOpen}
-                    onRequestClose={this.handleCloseSelectThemeDialog}
-                    autoScrollBodyContent={true}
-                >
-                    <List>
-                        {Themes.map((theme) => {
-                            return (
-                                <ListItem
-                                    key={theme.key}
-                                    primaryText={theme.displayName}
-                                    onTouchTap={() => {
-                                        this.handleSelectTheme(theme.key)
-                                    }}
-                                />
-                            )
-                        })}
-                    </List>
-                </Dialog>
+                    handleOpenDialog={this.handleCloseSelectThemeDialog}
+                    handleSelectTheme={this.handleSelectTheme}/>
 
                 <OpenSourceListDialog
                     open={this.state.openSourcesDialog.isOpen}
