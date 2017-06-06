@@ -9,6 +9,7 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 
 import Themes, {loadTheme} from '../Themes'
+import OpenSourceListDialog from '../component/OpenSourceListDialog';
 import LocalStorageManager from '../service/LocalStorageManager'
 import PackageJson from '../../../package.json';
 
@@ -147,33 +148,9 @@ export default class SettingsView extends React.Component {
                     </List>
                 </Dialog>
 
-                <Dialog
-                    title="Open sources"
-                    actions={[
-                        <FlatButton
-                            label="OK"
-                            primary={true}
-                            onTouchTap={this.handleCloseOpenSourcesDialog}
-                        />,
-                    ]}
-                    modal={false}
+                <OpenSourceListDialog
                     open={this.state.openSourcesDialog.isOpen}
-                    onRequestClose={this.handleCloseOpenSourcesDialog}
-                    autoScrollBodyContent={true}
-                >
-                    <List>
-                        {Object.keys(PackageJson.dependencies).map((dependency, i) => {
-                            return (
-                                <ListItem
-                                    key={dependency}
-                                    primaryText={dependency}
-                                    secondaryText={PackageJson.dependencies[dependency].replace(/^/g, '')}
-                                    onTouchTap={this.handleCloseOpenSourcesDialog}
-                                />
-                            )
-                        })}
-                    </List>
-                </Dialog>
+                    handleOpenDialog={this.handleCloseOpenSourcesDialog}/>
             </div>
         )
     }
