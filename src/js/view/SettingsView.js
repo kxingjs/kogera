@@ -16,37 +16,24 @@ const APPBAR_TITLE = 'Settings';
 
 export default class SettingsView extends React.Component {
     state = {
-        selectThemeDialog: {
-            isOpen: false
-        },
-        openSourcesDialog: {
-            isOpen: false
-        },
+        isOpenSelectThemeDialog: false,
+        isOpenOpenSourceDialog: false,
+        selectedThemeKey: null,
         settings: {}
     };
 
-    constructor(props) {
-        super(props);
-
-        this._dependencies = {
-            localStorageManager: new LocalStorageManager()
-        }
-    }
+    _dependencies = {
+        localStorageManager: new LocalStorageManager()
+    };
 
     handleCloseView = () => {
         this.props.history.push('/');
     };
 
     handleSelectTheme = (selectedThemeKey) => {
-        const newSettings = Object.assign({}, this.state.settings, {
-            themeKey: selectedThemeKey
-        });
-
         this.setState({
-            settings: newSettings,
-            selectThemeDialog: {
-                isOpen: false
-            }
+            selectedThemeKey: selectedThemeKey,
+            isOpenSelectThemeDialog: false
         });
         this._dependencies.localStorageManager.saveValue('theme', selectedThemeKey);
 
@@ -55,46 +42,31 @@ export default class SettingsView extends React.Component {
     };
 
     handleOpenSelectThemeDialog = () => {
-        this.setState({
-            selectThemeDialog: {
-                isOpen: true
-            }
-        })
+        this.setState({isOpenSelectThemeDialog: true});
     };
 
     handleCloseSelectThemeDialog = () => {
-        this.setState({
-            selectThemeDialog: {
-                isOpen: false
-            }
-        })
+        this.setState({isOpenSelectThemeDialog: false});
     };
 
     handleOpenOpenSourcesDialog = () => {
-        this.setState({
-            openSourcesDialog: {
-                isOpen: true
-            }
-        })
+        this.setState({isOpenOpenSourceDialogn: true});
     };
 
     handleCloseOpenSourcesDialog = () => {
-        this.setState({
-            openSourcesDialog: {
-                isOpen: false
-            }
-        })
+        this.setState({isOpenOpenSourceDialog: false});
     };
 
     componentWillMount() {
-        this.setState({
-            settings: {
-                themeKey: this._dependencies.localStorageManager.getValue('theme')
-            }
-        })
+        this.setState({selectedThemeKey: this._dependencies.localStorageManager.getValue('theme')});
     }
 
     render() {
+        const {
+            isOpenOpenSourceDialog,
+            isOpenSelectThemeDialog,
+            selectedThemeKey
+        }= this.state;
         return (
             <div>
                 <AppBar
@@ -107,7 +79,7 @@ export default class SettingsView extends React.Component {
                     <Subheader>General</Subheader>
                     <ListItem
                         primaryText="Theme"
-                        secondaryText={loadTheme(this.state.settings.themeKey).displayName}
+                        secondaryText={loadTheme(selectedThemeKey).displayName}
                         onTouchTap={this.handleOpenSelectThemeDialog}
                     />
                 </List>
@@ -126,12 +98,12 @@ export default class SettingsView extends React.Component {
                 </List>
 
                 <ThemeSelectDialog
-                    open={this.state.selectThemeDialog.isOpen}
+                    open={isOpenSelectThemeDialog}
                     handleOpenDialog={this.handleCloseSelectThemeDialog}
                     handleSelectTheme={this.handleSelectTheme}/>
 
                 <OpenSourceListDialog
-                    open={this.state.openSourcesDialog.isOpen}
+                    open={isOpenOpenSourceDialog}
                     handleOpenDialog={this.handleCloseOpenSourcesDialog}/>
             </div>
         )
